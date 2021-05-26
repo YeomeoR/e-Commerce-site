@@ -10,8 +10,8 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import './App.css';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       currentUser: null,
@@ -28,9 +28,15 @@ class App extends React.Component {
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 
+      // checking that there is a user logged in
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
+        // here we instantiate userRef and call the method 'onSnapshot' on it.
+        // what we get back is the snapshot data. 
+        // we then set the state to the snapshot data with the id and call .data() on
+        //  the snapshot in order to see the data we need therefore setting a new object of the data.
+        // basically listening for any changes and updating and setting the data.
         userRef.onSnapshot(snapShot => {
           this.setState({
             currentUser: {
@@ -42,11 +48,11 @@ class App extends React.Component {
       } else {
         this.setState({currentUser: userAuth})
       }
-      
       // console.log(user); 
       // this shows the whole Google object
       // --interesting!
- 
+      
+      
 
     });
   }
