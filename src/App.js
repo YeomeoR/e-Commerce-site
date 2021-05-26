@@ -5,7 +5,7 @@ import Homepage from './pages/homepage/Homepage.component';
 import ShopPage from './pages/shop/Shop.component.jsx';
 import Header from './components/header/header.component';
 import SignInAndSignUp from './components/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import './App.css';
 
@@ -26,11 +26,15 @@ class App extends React.Component {
 
   // fired on each re-rendering of the page
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
 
-      // console.log(user); this shows the whole Google object 
+      createUserProfileDocument(user)
+      
+      // console.log(user); 
+      // this shows the whole Google object
       // --interesting!
+
+
     });
   }
 
